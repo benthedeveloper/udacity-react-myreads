@@ -53,7 +53,7 @@ function App() {
     };
 
     getAllBooks();
-  }, []);
+  }, [bookshelves]);
 
   // TODO document this method
   const updateBookshelves = (updateResponseObj) => {
