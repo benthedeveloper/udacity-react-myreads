@@ -1,6 +1,18 @@
+import * as BooksAPI from "../BooksAPI";
 import BookshelfChanger from "./BookshelfChanger";
 
-const Book = ({ imageUrl, title, authors, shelf }) => {
+const Book = ({ bookId, imageUrl, title, authors, shelf, onMoveBook }) => {
+  // TODO document this method
+  const updateShelf = (newShelf) => {
+    const updateBook = async (id, newShelf) => {
+      const updatedBookObj = { id };
+      const response = await BooksAPI.update(updatedBookObj, newShelf);
+      onMoveBook(response);
+    };
+
+    updateBook(bookId, newShelf);
+  };
+
   return (
     <div className="book">
       <div className="book-top">
@@ -10,7 +22,7 @@ const Book = ({ imageUrl, title, authors, shelf }) => {
           alt=""
           style={{ maxHeight: '200px' }}
         />
-        <BookshelfChanger />
+        <BookshelfChanger curShelf={shelf} onShelfChange={updateShelf} />
       </div>
       <div className="book-title">{title}</div>
       <div className="book-authors">

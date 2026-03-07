@@ -1,7 +1,12 @@
-const BookshelfChanger = () => {
+const BookshelfChanger = ({ curShelf, onShelfChange }) => {
+  const onSelectChange = (event) => {
+    const newValue = event.target.value;
+    onShelfChange(newValue);
+  };
+
   return (
     <div className="book-shelf-changer">
-      <select>
+      <select value={curShelf} onChange={onSelectChange}>
         <option value="none" disabled>
           Move to...
         </option>

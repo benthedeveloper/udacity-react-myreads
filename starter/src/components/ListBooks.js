@@ -1,6 +1,6 @@
 import Bookshelf from "./Bookshelf";
 
-const ListBooks = ({ title, bookshelves }) => {
+const ListBooks = ({ title, bookshelves, onMoveBook }) => {
   return (
     <div className="list-books">
       <div className="list-books-title">
@@ -13,6 +13,7 @@ const ListBooks = ({ title, bookshelves }) => {
               key={bookshelf.id}
               title={bookshelf.title}
               books={bookshelf.books}
+              onMoveBook={onMoveBook}
             />
           ))}
         </div>
