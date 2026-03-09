@@ -1,5 +1,6 @@
 import './App.css';
 import { useState, useEffect } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import ListBooks from './components/ListBooks';
 import SearchBooks from './components/SearchBooks';
 import * as BooksAPI from './BooksAPI';
@@ -24,8 +25,6 @@ function App() {
   ];
 
   const [bookshelves, setBookshelves] = useState(initialBookshelves);
-  // TODO use Router instead
-  // const [showSearchPage, setShowSearchpage] = useState(false);
 
   useEffect(() => {
     // Gets all books from BooksAPI
@@ -38,7 +37,7 @@ function App() {
     const populateBookshelves = (booksData) => {
       if (!booksData?.length) {
         console.error('Failed getting books data from BooksAPI.');
-        // setBookshelves(initialBookshelves);
+        setBookshelves([]);
         return;
       }
 
@@ -62,10 +61,10 @@ function App() {
       (bookshelf) => bookshelf.books,
     );
 
-    updatedShelves.forEach(shelf => {
+    updatedShelves.forEach((shelf) => {
       const bookIdsToAdd = updateResponseObj[shelf.id];
       const booksOnShelf = [];
-      allBooksOnShelves.forEach(book => {
+      allBooksOnShelves.forEach((book) => {
         if (bookIdsToAdd.includes(book.id)) {
           // Make sure the shelf is updated for the book
           book.shelf = shelf.id;
@@ -75,17 +74,31 @@ function App() {
       shelf.books = booksOnShelf;
     });
 
-    setBookshelves(updatedShelves)
+    setBookshelves(updatedShelves);
   };
 
   return (
     <div className="app">
-      {/* TODO show ListBooks or SearchBooks based on route */}
-      <ListBooks
-        title="MyReads"
-        bookshelves={bookshelves}
-        onMoveBook={updateBookshelves}
-      />
+      <Routes>
+        <Route
+          exact
+          path="/"
+          element={
+            <ListBooks
+              title="MyReads"
+              bookshelves={bookshelves}
+              onMoveBook={updateBookshelves}
+            />
+          }
+        />
+        {/* TODO props for SearchBooks */}
+        <Route
+          path="/search"
+          element={
+            <SearchBooks />
+          }
+        />
+      </Routes>
     </div>
   );
 }

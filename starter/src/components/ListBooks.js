@@ -1,4 +1,5 @@
-import Bookshelf from "./Bookshelf";
+import Bookshelf from './Bookshelf';
+import { Link } from "react-router-dom";
 
 const ListBooks = ({ title, bookshelves, onMoveBook }) => {
   return (
@@ -17,6 +18,10 @@ const ListBooks = ({ title, bookshelves, onMoveBook }) => {
             />
           ))}
         </div>
+      </div>
+      {/* TODO change to a Link */}
+      <div className="open-search">
+        <Link to="/search" className="add-contact">Add a book</Link>
       </div>
     </div>
   );
