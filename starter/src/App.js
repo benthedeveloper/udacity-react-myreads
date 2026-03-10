@@ -1,6 +1,6 @@
 import './App.css';
 import { useState, useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import ListBooks from './components/ListBooks';
 import SearchBooks from './components/SearchBooks';
 import * as BooksAPI from './BooksAPI';
@@ -25,6 +25,8 @@ function App() {
   ];
 
   const [bookshelves, setBookshelves] = useState(initialBookshelves);
+
+  
 
   useEffect(() => {
     // Gets all books from BooksAPI
@@ -52,27 +54,35 @@ function App() {
     };
 
     getAllBooks();
-  }, [bookshelves]);
+  }, []);
 
   // TODO document this method
-  const updateBookshelves = (updateResponseObj) => {
+  const updateBookshelves = async (updateResponseObj) => {
     const updatedShelves = [...initialBookshelves];
     const allBooksOnShelves = bookshelves.flatMap(
       (bookshelf) => bookshelf.books,
     );
 
-    updatedShelves.forEach((shelf) => {
+    for (const shelf of updatedShelves) {
       const bookIdsToAdd = updateResponseObj[shelf.id];
-      const booksOnShelf = [];
-      allBooksOnShelves.forEach((book) => {
-        if (bookIdsToAdd.includes(book.id)) {
+      const updatedBooksOnShelf = [];
+
+      for (const bookIdToAdd of bookIdsToAdd) {
+        const foundBookOnShelf = allBooksOnShelves.find(book => book.id === bookIdToAdd);
+        if (foundBookOnShelf) {
           // Make sure the shelf is updated for the book
-          book.shelf = shelf.id;
-          booksOnShelf.push(book);
+          foundBookOnShelf.shelf = shelf.id;
+          updatedBooksOnShelf.push(foundBookOnShelf);
+        } else {
+          // Get book from API
+          const addedBook = await BooksAPI.get(bookIdToAdd);
+          addedBook.shelf = shelf.id;
+          updatedBooksOnShelf.push(addedBook);
         }
-      });
-      shelf.books = booksOnShelf;
-    });
+      }
+
+      shelf.books = updatedBooksOnShelf;
+    }
 
     setBookshelves(updatedShelves);
   };
@@ -95,7 +105,9 @@ function App() {
         <Route
           path="/search"
           element={
-            <SearchBooks />
+            <SearchBooks
+              bookshelves={bookshelves}
+              onMoveBook={updateBookshelves} />
           }
         />
       </Routes>

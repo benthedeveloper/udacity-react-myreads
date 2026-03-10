@@ -1,5 +1,5 @@
-import * as BooksAPI from "../BooksAPI";
-import BookshelfChanger from "./BookshelfChanger";
+import * as BooksAPI from '../BooksAPI';
+import BookshelfChanger from './BookshelfChanger';
 
 const Book = ({ bookId, imageUrl, title, authors, shelf, onMoveBook }) => {
   // TODO document this method
@@ -25,11 +25,13 @@ const Book = ({ bookId, imageUrl, title, authors, shelf, onMoveBook }) => {
         <BookshelfChanger curShelf={shelf} onShelfChange={updateShelf} />
       </div>
       <div className="book-title">{title}</div>
-      <div className="book-authors">
-        {authors.map((author) => (
-          <div key={author}>{author}</div>
-        ))}
-      </div>
+      {authors && (
+        <div className="book-authors">
+          {authors.map((author) => (
+            <div key={author}>{author}</div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
