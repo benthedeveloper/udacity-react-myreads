@@ -7,7 +7,16 @@ import * as BooksAPI from '../BooksAPI';
 const MAX_BOOK_RESULTS = 20;
 const SEARCH_TERMS_LOWER = SEARCH_TERMS.map((term) => term.toLowerCase());
 
-// TODO document this method
+/**
+ * Checks if the provided search query matches any of the allowed search terms (case-insensitive)
+ * The search query is expected to be a string that the user types into the search input field.
+ * The function will return true if the search query matches any of the allowed search terms defined in
+ * the SEARCH_TERMS constant, ignoring case. If the search query is empty or does not match any of the
+ * allowed search terms, the function will return false.
+ * 
+ * @param {string} query The search query
+ * @returns {boolean} Whether the search query matches any of the allowed search terms (case-insensitive)
+ */
 const queryMatchesSearchTerms = (query) => {
   if (!query.length) {
     return false;
@@ -20,20 +29,33 @@ const SearchBooks = ({ bookshelves, onMoveBook }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
-  // TODO document this method
+  /**
+   * Handles changes to the search input field. Sets the search query state to the trimmed value of the
+   * input field.
+   * 
+   * @param {Object} event The change event
+   */
   const handleSearchInputChange = (event) => {
     setSearchQuery(event.target.value.trim());
   };
 
   useEffect(() => {
-    // TODO document this method
+    /**
+     * Performs the search operation and updates the search results
+     */
     const search = async () => {
       const response = await BooksAPI.search(searchQuery, MAX_BOOK_RESULTS);
       const populatedResults = populateShelfValues(response, bookshelves);
       setSearchResults(populatedResults);
     };
 
-    // TODO document this method
+    /**
+     * Populates the shelf values for each book in the search results
+     * 
+     * @param {Array} searchResponse The array of books from the search response
+     * @param {Array} bookshelves The array of bookshelves
+     * @returns {Array} The array of books with populated shelf values
+     */
     const populateShelfValues = (searchResponse, bookshelves) => {
       const allBooksOnShelves = bookshelves.flatMap(
         (bookshelf) => bookshelf.books,

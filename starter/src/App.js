@@ -20,7 +20,7 @@ const initialBookshelves = [
     id: 'read',
     title: 'Read',
     books: [],
-  }
+  },
 ];
 
 function App() {
@@ -54,7 +54,18 @@ function App() {
     getAllBooks();
   }, []);
 
-  // TODO document this method
+  /**
+   * Updates the bookshelves with the provided update response object
+   * The update response object is expected to be in the format:
+   * {
+   *    currentlyReading: [bookId1, bookId2, ...],
+   *    wantToRead: [bookId3, bookId4, ...],
+   *    read: [bookId5, bookId6, ...]
+   * }
+   *
+   * @param {*} updateResponseObj - The object containing the updated bookshelf data from the API
+   * @returns {Promise<void>}
+   */
   const updateBookshelves = async (updateResponseObj) => {
     const updatedShelves = [...initialBookshelves];
     const allBooksOnShelves = bookshelves.flatMap(
@@ -101,7 +112,6 @@ function App() {
             />
           }
         />
-        {/* TODO props for SearchBooks */}
         <Route
           path="/search"
           element={

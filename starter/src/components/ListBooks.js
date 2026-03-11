@@ -19,7 +19,6 @@ const ListBooks = ({ title, bookshelves, onMoveBook }) => {
           ))}
         </div>
       </div>
-      {/* TODO change to a Link */}
       <div className="open-search">
         <Link to="/search" className="add-contact">Add a book</Link>
       </div>
