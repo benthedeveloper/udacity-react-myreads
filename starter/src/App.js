@@ -5,28 +5,26 @@ import ListBooks from './components/ListBooks';
 import SearchBooks from './components/SearchBooks';
 import * as BooksAPI from './BooksAPI';
 
+const initialBookshelves = [
+  {
+    id: 'currentlyReading',
+    title: 'Currently reading',
+    books: [],
+  },
+  {
+    id: 'wantToRead',
+    title: 'Want to read',
+    books: [],
+  },
+  {
+    id: 'read',
+    title: 'Read',
+    books: [],
+  }
+];
+
 function App() {
-  const initialBookshelves = [
-    {
-      id: 'currentlyReading',
-      title: 'Currently reading',
-      books: [],
-    },
-    {
-      id: 'wantToRead',
-      title: 'Want to read',
-      books: [],
-    },
-    {
-      id: 'read',
-      title: 'Read',
-      books: [],
-    },
-  ];
-
   const [bookshelves, setBookshelves] = useState(initialBookshelves);
-
-  
 
   useEffect(() => {
     // Gets all books from BooksAPI
@@ -43,7 +41,7 @@ function App() {
         return;
       }
 
-      const updatedShelves = bookshelves.map((shelf) => {
+      const updatedShelves = initialBookshelves.map((shelf) => {
         const booksForShelf = booksData.filter(
           (book) => book.shelf === shelf.id,
         );
@@ -68,7 +66,9 @@ function App() {
       const updatedBooksOnShelf = [];
 
       for (const bookIdToAdd of bookIdsToAdd) {
-        const foundBookOnShelf = allBooksOnShelves.find(book => book.id === bookIdToAdd);
+        const foundBookOnShelf = allBooksOnShelves.find(
+          (book) => book.id === bookIdToAdd,
+        );
         if (foundBookOnShelf) {
           // Make sure the shelf is updated for the book
           foundBookOnShelf.shelf = shelf.id;
@@ -107,7 +107,8 @@ function App() {
           element={
             <SearchBooks
               bookshelves={bookshelves}
-              onMoveBook={updateBookshelves} />
+              onMoveBook={updateBookshelves}
+            />
           }
         />
       </Routes>
