@@ -8,7 +8,7 @@ const MAX_BOOK_RESULTS = 20;
 const SEARCH_TERMS_LOWER = SEARCH_TERMS.map((term) => term.toLowerCase());
 
 /**
- * Checks if the provided search query matches any of the allowed search terms (case-insensitive)
+ * Checks if the provided search query (trimmed) matches any of the allowed search terms (case-insensitive)
  * The search query is expected to be a string that the user types into the search input field.
  * The function will return true if the search query matches any of the allowed search terms defined in
  * the SEARCH_TERMS constant, ignoring case. If the search query is empty or does not match any of the
@@ -18,11 +18,13 @@ const SEARCH_TERMS_LOWER = SEARCH_TERMS.map((term) => term.toLowerCase());
  * @returns {boolean} Whether the search query matches any of the allowed search terms (case-insensitive)
  */
 const queryMatchesSearchTerms = (query) => {
-  if (!query.length) {
+  const trimmedQuery = query?.trim();
+
+  if (!trimmedQuery.length) {
     return false;
   }
 
-  return SEARCH_TERMS_LOWER.includes(query.toLowerCase());
+  return SEARCH_TERMS_LOWER.includes(trimmedQuery.toLowerCase());
 };
 
 const SearchBooks = ({ bookshelves, onMoveBook }) => {
@@ -36,7 +38,7 @@ const SearchBooks = ({ bookshelves, onMoveBook }) => {
    * @param {Object} event The change event
    */
   const handleSearchInputChange = (event) => {
-    setSearchQuery(event.target.value.trim());
+    setSearchQuery(event.target.value);
   };
 
   useEffect(() => {
@@ -44,7 +46,7 @@ const SearchBooks = ({ bookshelves, onMoveBook }) => {
      * Performs the search operation and updates the search results
      */
     const search = async () => {
-      const response = await BooksAPI.search(searchQuery, MAX_BOOK_RESULTS);
+      const response = await BooksAPI.search(searchQuery.trim(), MAX_BOOK_RESULTS);
       const populatedResults = populateShelfValues(response, bookshelves);
       setSearchResults(populatedResults);
     };
