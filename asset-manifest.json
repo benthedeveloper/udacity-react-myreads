@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/udacity-react-myreads/static/css/main.2257d1c4.chunk.css",
-    "main.js": "/udacity-react-myreads/static/js/main.81ea3f5e.chunk.js",
-    "main.js.map": "/udacity-react-myreads/static/js/main.81ea3f5e.chunk.js.map",
+    "main.js": "/udacity-react-myreads/static/js/main.6bf512c8.chunk.js",
+    "main.js.map": "/udacity-react-myreads/static/js/main.6bf512c8.chunk.js.map",
     "runtime-main.js": "/udacity-react-myreads/static/js/runtime-main.aa29e888.js",
     "runtime-main.js.map": "/udacity-react-myreads/static/js/runtime-main.aa29e888.js.map",
     "static/js/2.b7e43d9d.chunk.js": "/udacity-react-myreads/static/js/2.b7e43d9d.chunk.js",
@@ -16,6 +16,6 @@
     "static/js/runtime-main.aa29e888.js",
     "static/js/2.b7e43d9d.chunk.js",
     "static/css/main.2257d1c4.chunk.css",
-    "static/js/main.81ea3f5e.chunk.js"
+    "static/js/main.6bf512c8.chunk.js"
   ]
 }
