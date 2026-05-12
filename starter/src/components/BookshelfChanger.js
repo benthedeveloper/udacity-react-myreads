@@ -7,7 +7,7 @@ const BookshelfChanger = ({ curShelf, onShelfChange }) => {
   return (
     <div className="book-shelf-changer">
       <select value={curShelf} onChange={onSelectChange}>
-        <option value="none" disabled>
+        <option value="" disabled>
           Move to...
         </option>
         <option value="currentlyReading">Currently Reading</option>
