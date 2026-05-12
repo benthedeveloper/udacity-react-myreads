@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useDebounce } from 'use-debounce';
 import { Link } from 'react-router-dom';
 import BooksGrid from './BooksGrid';
 import SEARCH_TERMS from '../search-terms';
@@ -13,7 +14,7 @@ const SEARCH_TERMS_LOWER = SEARCH_TERMS.map((term) => term.toLowerCase());
  * The function will return true if the search query matches any of the allowed search terms defined in
  * the SEARCH_TERMS constant, ignoring case. If the search query is empty or does not match any of the
  * allowed search terms, the function will return false.
- * 
+ *
  * @param {string} query The search query
  * @returns {boolean} Whether the search query matches any of the allowed search terms (case-insensitive)
  */
@@ -30,11 +31,13 @@ const queryMatchesSearchTerms = (query) => {
 const SearchBooks = ({ bookshelves, onMoveBook }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  // Debounce searchQuery by 500ms
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
 
   /**
    * Handles changes to the search input field. Sets the search query state to the trimmed value of the
    * input field.
-   * 
+   *
    * @param {Object} event The change event
    */
   const handleSearchInputChange = (event) => {
@@ -46,14 +49,17 @@ const SearchBooks = ({ bookshelves, onMoveBook }) => {
      * Performs the search operation and updates the search results
      */
     const search = async () => {
-      const response = await BooksAPI.search(searchQuery.trim(), MAX_BOOK_RESULTS);
+      const response = await BooksAPI.search(
+        debouncedSearchQuery.trim(),
+        MAX_BOOK_RESULTS,
+      );
       const populatedResults = populateShelfValues(response, bookshelves);
       setSearchResults(populatedResults);
     };
 
     /**
      * Populates the shelf values for each book in the search results
-     * 
+     *
      * @param {Array} searchResponse The array of books from the search response
      * @param {Array} bookshelves The array of bookshelves
      * @returns {Array} The array of books with populated shelf values
@@ -62,10 +68,12 @@ const SearchBooks = ({ bookshelves, onMoveBook }) => {
       const allBooksOnShelves = bookshelves.flatMap(
         (bookshelf) => bookshelf.books,
       );
-      return searchResponse.map(bookFromResponse => {
-        const bookFoundOnShelf = allBooksOnShelves.find(book => book.id === bookFromResponse.id);
+      return searchResponse.map((bookFromResponse) => {
+        const bookFoundOnShelf = allBooksOnShelves.find(
+          (book) => book.id === bookFromResponse.id,
+        );
         if (bookFoundOnShelf) {
-          bookFromResponse.shelf = bookFoundOnShelf.shelf
+          bookFromResponse.shelf = bookFoundOnShelf.shelf;
         } else {
           bookFromResponse.shelf = 'none';
         }
@@ -74,14 +82,14 @@ const SearchBooks = ({ bookshelves, onMoveBook }) => {
       });
     };
 
-    if (!queryMatchesSearchTerms(searchQuery)) {
+    if (!queryMatchesSearchTerms(debouncedSearchQuery)) {
       // Clear results and return early so we don't make a call to search
       setSearchResults([]);
       return;
     }
 
     search();
-  }, [searchQuery, bookshelves]);
+  }, [debouncedSearchQuery, bookshelves]);
 
   return (
     <div className="search-books">
