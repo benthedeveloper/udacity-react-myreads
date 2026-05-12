@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const BookshelfChanger = ({ curShelf, onShelfChange }) => {
   const onSelectChange = (event) => {
     const newValue = event.target.value;
@@ -17,6 +19,11 @@ const BookshelfChanger = ({ curShelf, onShelfChange }) => {
       </select>
     </div>
   );
+};
+
+BookshelfChanger.propTypes = {
+  curShelf: PropTypes.string.isRequired,
+  onShelfChange: PropTypes.func.isRequired,
 };
 
 export default BookshelfChanger;

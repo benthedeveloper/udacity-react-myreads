@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import BooksGrid from './BooksGrid';
 import SEARCH_TERMS from '../search-terms';
 import * as BooksAPI from '../BooksAPI';
+import PropTypes from 'prop-types';
 
 const MAX_BOOK_RESULTS = 20;
 const SEARCH_TERMS_LOWER = SEARCH_TERMS.map((term) => term.toLowerCase());
@@ -111,6 +112,26 @@ const SearchBooks = ({ bookshelves, onMoveBook }) => {
       </div>
     </div>
   );
+};
+
+SearchBooks.propTypes = {
+  bookshelves: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      books: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          imageLinks: PropTypes.shape({
+            thumbnail: PropTypes.string,
+          }),
+          title: PropTypes.string.isRequired,
+          authors: PropTypes.arrayOf(PropTypes.string),
+          shelf: PropTypes.string.isRequired,
+        }),
+      ).isRequired,
+    }),
+  ).isRequired,
 };
 
 export default SearchBooks;

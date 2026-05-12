@@ -1,12 +1,13 @@
 import * as BooksAPI from '../BooksAPI';
 import BookshelfChanger from './BookshelfChanger';
+import PropTypes from 'prop-types';
 
 const Book = ({ bookId, imageUrl, title, authors, shelf, onMoveBook }) => {
   /**
    * Update the shelf for a specific book and call the onMoveBook callback with the response from the API
-   * 
+   *
    * @param {*} newShelf - The new shelf to move the book to (e.g. "currentlyReading", "wantToRead", "read", or "none")
-   * @returns {Promise<void>} 
+   * @returns {Promise<void>}
    */
   const updateShelf = (newShelf) => {
     const updateBook = async (id, newShelf) => {
@@ -39,6 +40,15 @@ const Book = ({ bookId, imageUrl, title, authors, shelf, onMoveBook }) => {
       )}
     </div>
   );
+};
+
+Book.propTypes = {
+  bookId: PropTypes.string.isRequired,
+  imageUrl: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  authors: PropTypes.array,
+  shelf: PropTypes.string.isRequired,
+  onMoveBook: PropTypes.func.isRequired,
 };
 
 export default Book;
